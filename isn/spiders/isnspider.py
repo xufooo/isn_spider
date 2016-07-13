@@ -27,7 +27,7 @@ class ISNSpider(scrapy.Spider):
 
 	def parse_dir_contents(self, response):
 		item = IsnItem()
-		item['title'] = response.xpath("//tr[1]/td[1]/text()").extract()[1].strip()
-		item['date'] = response.xpath("//tr[2]/td/span/text()").extract()[0].strip()
+		item['title'] = response.xpath("//div[@class='neirongf viewbox']//form/table/tr[1]/td").xpath('string(.)').extract_first().strip()
+		item['date'] = response.xpath("//div[@class='neirongf viewbox']//table/tr[2]/td/span/text()").extract()[0].strip()
 		item['url'] = response.url
 		yield item
