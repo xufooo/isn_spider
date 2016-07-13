@@ -21,6 +21,8 @@ class ISNSpider(scrapy.Spider):
 			url = response.urljoin(sel.xpath('a/@href').extract_first())
 #            yield item
 			yield scrapy.Request(url, callback = self.parse_dir_contents)
+		next_page_url = response.urljoin(response.xpath("//div[@class='liebiaorf']//a[@class='Next']/@href").extract_first())
+		yield scrapy.Request(next_page_url, callback = self.parse)
 
 
 	def parse_dir_contents(self, response):
