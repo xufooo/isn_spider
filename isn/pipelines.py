@@ -30,6 +30,8 @@ class IsnPipeline(object):
 		self.file.write(item['title'].encode('GB18030'))
 		self.file.write("\n")
 		self.file.write(item['content'].encode('GB18030'))
+		self.file.write("\n")
+		self.file.write("image_url:\n" + item['img_url'].encode('GB18030'))
 		self.file.write("\n\n\n")
 #		cursor = self.dbObject.cursor()
 #		sql = 'insert into isn_web.news(title, url, date) values (%s, %s, %s)'

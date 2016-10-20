@@ -5,6 +5,8 @@ sys.setdefaultencoding( "utf-8" )
 import scrapy
 from isn.items import IsnItem
 from scrapy.utils.markup import remove_tags
+from scrapy.utils.response import get_base_url
+from scrapy.utils.url import urljoin_rfc
 
 class ISNSpider(scrapy.Spider):
 	name = "isnspider"
@@ -31,5 +33,7 @@ class ISNSpider(scrapy.Spider):
 		item['title'] = response.xpath("//div[@class='neirongf viewbox']//form/table/tr[1]/td").xpath('string(.)').extract_first().strip()
 		item['date'] = response.xpath("//div[@class='neirongf viewbox']//table/tr[2]/td/span/text()").extract()[0].strip()
 		item['content'] = remove_tags("".join(response.xpath("//div[@class='neirongf viewbox']//form/table//div[@id='vsb_newscontent']//p").extract()))
+		img_relative_url = response.xpath("//div[@class='neirongf viewbox']//form/table//div[@id='vsb_newscontent']//p/img/@src").extract()
+		item['img_url'] = "\n".join([urljoin_rfc(get_base_url(response), ru) for ru in img_relative_url])
 		item['url'] = response.url
 		yield item
