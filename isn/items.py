@@ -13,5 +13,6 @@ class IsnItem(scrapy.Item):
     # name = scrapy.Field()
     title = scrapy.Field()
     date = scrapy.Field()
+    content = scrapy.Field()
     url = scrapy.Field()
     # pass
