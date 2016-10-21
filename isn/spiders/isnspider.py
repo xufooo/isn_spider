@@ -12,7 +12,9 @@ class ISNSpider(scrapy.Spider):
 	name = "isnspider"
 	allowed_domains = ["isn.xidian.edu.cn"]
 	start_urls = [
-		"http://isn.xidian.edu.cn/xwgg.htm",
+		"http://isn.xidian.edu.cn/kfjl/xsjl.htm",
+		"http://isn.xidian.edu.cn/xwgg/xwdt.htm",
+		"http://isn.xidian.edu.cn/xwgg/tzgg.htm",
 		]
 
 	def parse(self, response):
@@ -30,6 +32,8 @@ class ISNSpider(scrapy.Spider):
 
 	def parse_dir_contents(self, response):
 		item = IsnItem()
+		item['category'] = response.xpath("//div[@class='neirongt']//table//tr/td").xpath('string(.)').extract()[0].split('>')[-2].strip()
+		print item['category']
 		item['title'] = response.xpath("//div[@class='neirongf viewbox']//form/table/tr[1]/td").xpath('string(.)').extract_first().strip()
 		item['date'] = response.xpath("//div[@class='neirongf viewbox']//table/tr[2]/td/span/text()").extract()[0].strip()
 		item['content'] = remove_tags("".join(response.xpath("//div[@class='neirongf viewbox']//form/table//div[@id='vsb_newscontent']//p").extract()))
